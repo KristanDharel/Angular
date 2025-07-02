@@ -1,0 +1,110 @@
+<h1>Add product</h1>
+<form [formGroup]="addProductForm" (ngSubmit)="onSubmit()">
+  <div *ngIf="addError" class="error-message">{{addError}}</div>
+  <div *ngIf="successMessage" class="success-message">{{successMessage}}</div>
+
+  <div class="input-group">
+    <label>Product Name</label>
+    <input
+      type="text"
+      formControlName="ProductName"
+      [class.invalid]="ProductName?.invalid && (ProductName?.dirty || ProductName?.touched || formSubmitted)"
+    />
+    <span
+      *ngIf="ProductName?.hasError('required') && (ProductName?.dirty || ProductName?.touched || formSubmitted)"
+      class="error"
+      >Product name is required</span
+    >
+  </div>
+
+  <div class="input-group">
+    <label>Product Description</label>
+    <textarea
+      formControlName="ProductDescription"
+      [class.invalid]="ProductDescription?.invalid && (ProductDescription?.dirty || ProductDescription?.touched || formSubmitted)"
+    ></textarea>
+    <span
+      *ngIf="ProductDescription?.hasError('required') && (ProductDescription?.dirty || ProductDescription?.touched || formSubmitted)"
+      class="error"
+      >Product description is required</span
+    >
+  </div>
+
+  <div class="input-group">
+    <label>Starting Bid</label>
+    <input
+      type="number"
+      formControlName="startingBid"
+      min="0.01"
+      step="0.01"
+      [class.invalid]="startingBid?.invalid && (startingBid?.dirty || startingBid?.touched || formSubmitted)"
+    />
+    <span
+      *ngIf="startingBid?.hasError('required') && (startingBid?.dirty || startingBid?.touched || formSubmitted)"
+      class="error"
+      >Starting Bid is required</span
+    >
+    <span
+      *ngIf="startingBid?.hasError('min') && (startingBid?.dirty || startingBid?.touched || formSubmitted)"
+      class="error"
+      >Starting Bid must be greater than 0</span
+    >
+  </div>
+
+  <div class="input-group">
+    <label>Product Category</label>
+    <select
+      formControlName="category"
+      [class.invalid]="category?.invalid && (category?.dirty || category?.touched || formSubmitted)"
+    >
+      <option value="">Select a category</option>
+      <option value="Clothing">Clothing</option>
+      <option value="Collectibles">Collectibles</option>
+    </select>
+    <span
+      *ngIf="category?.hasError('required') && (category?.dirty || category?.touched || formSubmitted)"
+      class="error"
+      >Product category is required</span
+    >
+  </div>
+
+  <div class="input-group">
+    <label>Bidding End Date</label>
+    <input
+      type="datetime-local"
+      formControlName="biddingEndDate"
+      [class.invalid]="biddingEndDate?.invalid && (biddingEndDate?.dirty || biddingEndDate?.touched || formSubmitted)"
+    />
+    <span
+      *ngIf="biddingEndDate?.hasError('required') && (biddingEndDate?.dirty || biddingEndDate?.touched || formSubmitted)"
+      class="error"
+      >Bidding end date is required</span
+    >
+  </div>
+
+  <div class="input-group">
+    <label>Product Images</label>
+    <input
+      type="file"
+      multiple
+      accept="image/*"
+      (change)="onFileSelected($event)"
+      [class.invalid]="(!selectedFiles || selectedFiles.length === 0) && formSubmitted"
+    />
+    <span
+      *ngIf="(!selectedFiles || selectedFiles.length === 0) && formSubmitted"
+      class="error"
+      >At least one product image is required</span
+    >
+    <div *ngIf="selectedFiles && selectedFiles.length > 0" class="file-preview">
+      <p>Selected files: {{selectedFiles.length}}</p>
+      <ul>
+        <li *ngFor="let file of selectedFiles">{{file.name}}</li>
+      </ul>
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="isLoading">
+    {{isLoading ? 'Submitting...' : 'Submit'}}
+  </button>
+</form>

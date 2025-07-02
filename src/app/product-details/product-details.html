@@ -1,0 +1,112 @@
+<div class="product-details-container">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <p>Loading product details...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-state">
+    <p>{{ error }}</p>
+    <button (click)="goBack()" class="back-button">Go Back</button>
+  </div>
+
+  <!-- Product Details -->
+  <div *ngIf="product && !loading" class="product-details">
+    <!-- Navigation -->
+    <div class="navigation">
+      <button (click)="goBack()" class="back-button">← Back to Products</button>
+    </div>
+
+    <!-- Main Content Area (image and info side by side) -->
+    <div class="product-content">
+      <!-- Product Images -->
+      <div class="product-images">
+        <div *ngIf="product.images.length > 0" class="image-gallery">
+          <img
+            *ngFor="let image of product.images"
+            [src]="image.url"
+            [alt]="product.ProductName"
+            class="product-image"
+          />
+        </div>
+        <div *ngIf="product.images.length === 0" class="no-image">
+          <p>No images available</p>
+        </div>
+      </div>
+
+      <!-- Product Information -->
+      <div class="product-info">
+        <h1 class="product-title">{{ product.ProductName }}</h1>
+
+        <div class="status-section">
+          <span
+            class="status-badge"
+            [class.approved]="product.status === 'approved'"
+          >
+            {{ product.status }}
+          </span>
+        </div>
+
+        <div class="description-section">
+          <h3>Description</h3>
+          <p class="product-description">{{ product.ProductDescription }}</p>
+        </div>
+
+        <div class="pricing-section">
+          <div class="starting-bid">
+            <h3>Starting Bid</h3>
+            <span class="price">${{ product.startingBid }}</span>
+          </div>
+        </div>
+        <div class="pricing-section">
+          <div class="starting-bid">
+            <h3>Current Bid Bid</h3>
+            <span class="price">${{ product.currentBid }}</span>
+          </div>
+        </div>
+        <div class="pricing-section">
+          <div class="starting-bid">
+            <h3>Bidding End Date</h3>
+            <span class="date"
+              >{{ product.biddingEndDate | date:'medium'}}</span
+            >
+          </div>
+        </div>
+
+        <div class="seller-section">
+          <h3>Seller Information</h3>
+          <p class="seller-name">{{ product.sellerName || product.seller }}</p>
+        </div>
+
+        <div class="payment-status" *ngIf="product.paymentStatus !== undefined">
+          <p>
+            Payment Status:
+            <span
+              [class.paid]="product.paymentStatus"
+              [class.unpaid]="!product.paymentStatus"
+            >
+              {{ product.paymentStatus ? 'Paid' : 'Unpaid' }}
+            </span>
+          </p>
+        </div>
+
+        <!-- Action Buttons -->
+        <input
+          type="number"
+          [(ngModel)]="bidAmount"
+          placeholder="Your bid amount"
+          [disabled]="isBidDisabled()"
+        />
+        <div class="action-buttons">
+          <button
+            (click)="placeBid()"
+            class="bid-button"
+            [disabled]="isBidDisabled()"
+          >
+            Place Bid
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

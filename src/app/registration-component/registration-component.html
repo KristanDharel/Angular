@@ -1,0 +1,153 @@
+<div class="register-container">
+  <h2>Create Account</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <!-- Display registration error -->
+    <div *ngIf="registerError" class="error-message">{{ registerError }}</div>
+
+    <div class="input-group">
+      <label for="firstName">First Name</label>
+      <input
+        type="text"
+        id="firstName"
+        formControlName="firstName"
+        [class.invalid]="firstName?.invalid && (firstName?.dirty || firstName?.touched)"
+      />
+      <span
+        *ngIf="firstName?.hasError('required') && (firstName?.dirty || firstName?.touched)"
+        class="error"
+      >
+        First name is required
+      </span>
+    </div>
+
+    <div class="input-group">
+      <label for="lastName">Last Name</label>
+      <input
+        type="text"
+        id="lastName"
+        formControlName="lastName"
+        [class.invalid]="lastName?.invalid && (lastName?.dirty || lastName?.touched)"
+      />
+      <span
+        *ngIf="lastName?.hasError('required') && (lastName?.dirty || lastName?.touched)"
+        class="error"
+      >
+        Last name is required
+      </span>
+    </div>
+
+    <div class="input-group">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        [class.invalid]="email?.invalid && (email?.dirty || email?.touched)"
+      />
+      <span
+        *ngIf="email?.hasError('required') && (email?.dirty || email?.touched)"
+        class="error"
+      >
+        Email is required
+      </span>
+      <span
+        *ngIf="email?.hasError('pattern') && (email?.dirty || email?.touched)"
+        class="error"
+      >
+        Please enter a valid email address
+      </span>
+    </div>
+
+    <div class="input-group">
+      <label for="phoneNumber">Phone Number</label>
+      <input
+        type="tel"
+        id="phoneNumber"
+        formControlName="phoneNumber"
+        [class.invalid]="phoneNumber?.invalid && (phoneNumber?.dirty || phoneNumber?.touched)"
+      />
+      <span
+        *ngIf="phoneNumber?.hasError('required') && (phoneNumber?.dirty || phoneNumber?.touched)"
+        class="error"
+      >
+        Phone number is required
+      </span>
+    </div>
+
+    <div class="input-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        formControlName="password"
+        [class.invalid]="password?.invalid && (password?.dirty || password?.touched)"
+      />
+      <span
+        *ngIf="password?.hasError('required') && (password?.dirty || password?.touched)"
+        class="error"
+      >
+        Password is required
+      </span>
+      <span
+        *ngIf="password?.hasError('minlength') && (password?.dirty || password?.touched)"
+        class="error"
+      >
+        Password must be at least 6 characters
+      </span>
+    </div>
+
+    <div class="input-group">
+      <label for="confirmPassword">Confirm Password</label>
+      <input
+        type="password"
+        id="confirmPassword"
+        formControlName="confirmPassword"
+        [class.invalid]="confirmPassword?.invalid && (confirmPassword?.dirty || confirmPassword?.touched)"
+      />
+      <span
+        *ngIf="confirmPassword?.hasError('required') && (confirmPassword?.dirty || confirmPassword?.touched)"
+        class="error"
+      >
+        Please confirm your password
+      </span>
+      <span
+        *ngIf="registerForm.hasError('passwordMismatch') && confirmPassword?.touched"
+        class="error"
+      >
+        Passwords do not match
+      </span>
+    </div>
+
+    <div class="input-group">
+      <label for="role">Account Type</label>
+      <select
+        id="role"
+        formControlName="role"
+        [class.invalid]="role?.invalid && (role?.dirty || role?.touched)"
+      >
+        <option value="user">user</option>
+        <option value="seller">Seller</option>
+        <option value="staff">Staff</option>
+        <option value="admin">Admin</option>
+      </select>
+      <span
+        *ngIf="role?.hasError('required') && (role?.dirty || role?.touched)"
+        class="error"
+      >
+        Please select an account type
+      </span>
+    </div>
+
+    <button
+      type="submit"
+      class="register-btn"
+      [disabled]="isLoading || registerForm.invalid"
+    >
+      {{ isLoading ? 'Creating Account...' : 'Create Account' }}
+    </button>
+
+    <p class="login-link">
+      Already have an account? <a href="/login">Sign in</a>
+    </p>
+  </form>
+</div>

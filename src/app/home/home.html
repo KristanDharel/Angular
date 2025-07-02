@@ -1,0 +1,151 @@
+<!-- <div class="product-container">
+  <h1 class="title">Approved Products</h1>
+
+  <div *ngIf="productList.length === 0" class="empty-state">
+    <p>No approved products available at the moment.</p>
+  </div>
+
+  <div class="product-grid">
+    <div *ngFor="let product of productList" class="product-card">
+      <div class="product-image-container">
+        <img
+          *ngIf="product.images.length > 0"
+          [src]="product.images[0].url"
+          [alt]="product.ProductName"
+          class="product-image"
+        />
+        <div *ngIf="product.images.length === 0" class="image-placeholder">
+          No Image
+        </div>
+      </div>
+
+      <div class="product-details">
+        <h3 class="product-name">{{ product.ProductName }}</h3>
+        <p class="product-description">{{ product.ProductDescription }}</p>
+
+        <div class="price-section">
+          <span class="starting-bid"
+            >Starting Bid: ${{ product.startingBid }}</span
+          >
+        </div>
+
+        <div class="seller-info">
+          <span>Sold by: {{ product.sellerName || product.seller }}</span>
+        </div>
+
+        <div
+          class="status-badge"
+          [class.approved]="product.status === 'approved'"
+        >
+          {{ product.status }}
+        </div>
+      </div>
+      <button (click)="viewProductDetails(product._id)">Bid Now</button>
+    </div>
+  </div>
+</div> -->
+<div class="product-container">
+  <h1 class="title">Approved Products</h1>
+  <div class="searchBar">
+    <input
+      class="search"
+      type="text"
+      placeholder="Search..."
+      [(ngModel)]="searchQuery"
+      (ngModelChange)="searchFunctionality()"
+    />
+    <button (click)="reset()">Reset</button>
+  </div>
+  @if (isLoading()) {
+  <div class="loading">Loading...</div>
+  } @if (productList().length === 0 && !isLoading()) {
+  <div class="empty-state">
+    <p>No approved products available at the moment.</p>
+  </div>
+  }
+
+  <div class="product-grid">
+    @for (product of productList(); track product._id) {
+    <div class="product-card">
+      <div class="product-image-container">
+        @if (product.images.length > 0) {
+        <img
+          [src]="product.images[0].url"
+          [alt]="product.ProductName"
+          class="product-image"
+        />
+        } @else {
+        <div class="image-placeholder">No Image</div>
+        }
+      </div>
+
+      <div class="product-details">
+        <h3 class="product-name">{{ product.ProductName }}</h3>
+        <p class="product-description">{{ product.ProductDescription }}</p>
+
+        <div class="price-section">
+          <span class="starting-bid"
+            >Starting Bid: ${{ product.startingBid }}</span
+          >
+        </div>
+
+        <div class="seller-info">
+          <span>Sold by: {{ product.sellerName || product.seller }}</span>
+        </div>
+
+        <div
+          class="status-badge"
+          [class.approved]="product.status === 'approved'"
+        >
+          {{ product.status }}
+        </div>
+      </div>
+      <button (click)="viewProductDetails(product._id)">Bid Now</button>
+    </div>
+    }
+  </div>
+
+  @if (productList().length > 0) {
+  <div class="pagination">
+    <button
+      (click)="goToPage(1)"
+      [disabled]="currentPage() === 1"
+      class="page-button"
+    >
+      First
+    </button>
+    <button
+      (click)="previousPage()"
+      [disabled]="currentPage() === 1"
+      class="page-button"
+    >
+      Previous
+    </button>
+
+    @for (page of getPages(); track page) {
+    <button
+      (click)="goToPage(page)"
+      [class.active]="page === currentPage()"
+      class="page-number"
+    >
+      {{ page }}
+    </button>
+    }
+
+    <button
+      (click)="nextPage()"
+      [disabled]="currentPage() === totalPages()"
+      class="page-button"
+    >
+      Next
+    </button>
+    <button
+      (click)="goToPage(totalPages())"
+      [disabled]="currentPage() === totalPages()"
+      class="page-button"
+    >
+      Last
+    </button>
+  </div>
+  }
+</div>
